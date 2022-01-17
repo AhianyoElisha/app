@@ -5,6 +5,10 @@
   $staff = '';
 if (isset($_POST['detail'])) {
   $staff = $_POST['store_id'];
+  $_POST = array();
+}
+else {
+  $staff = $_GET['staff_id'];
 }
 $_SESSION['staff_id'] = $staff;
 ?>
@@ -154,7 +158,7 @@ if ($query_run->num_rows > 0) {
         <div class="col-sm-4 invoice-col">
           <div class="box box-primary">
             <div class="box-body box-profile">
-              <img class="profile-user-img img-responsive img-circle" src="../../dist/img/profiles/user-profile-svgrepo-com.svg" alt="User profile picture">
+              <img class="profile-user-img img-responsive img-circle" style="width:130px;height:130px" src="../../uploads/<?php echo $row['profile']?>" alt="User profile picture">
 
               <h3 class="profile-username text-center"><?php echo $row['Staff_name']?></h3>
 

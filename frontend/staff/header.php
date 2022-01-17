@@ -236,7 +236,7 @@
                   <a href="auth.php" class="btn btn-default btn-flat">Authentication</a>
                 </div>
                 <div class="pull-right">
-                  <a href="../../backend/logout.php?logout" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="../../backend/logout.php?logout_staff" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>

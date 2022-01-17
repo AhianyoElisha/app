@@ -14,13 +14,12 @@
     <?php include('../../frontend/header.php')?>
   <!-- Left side column. contains the logo and sidebar -->
     <?php include('../../frontend/left-aside.php')?>
-    <?php include('add.php')?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper" style="padding-top: 50px">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Female Staff
+        Staff
       </h1>
       <ol class="breadcrumb">
         <li><a href="index.php"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -31,11 +30,17 @@
     <!-- Main content -->
     <section class="content">
       <div class="col-md-12">
+        <a class="btn btn-app bg-success" id="formales">
+          <i class="ion ion-man"></i>Males
+        </a>
         <a class="btn btn-app bg-success" id="forfemales">
           <i class="ion ion-woman"></i>Females
         </a>
+        <a class="btn btn-app bg-success" id="forall">
+          <i class="ion ion-ios-people"></i>All
+        </a>
         <a class="btn btn-app bg-success" id="forsecond">
-          <i class="ion ion-settings"></i>Secondment
+          <i class="ion ion-settings"></i>Seconded
         </a>
         <a class="btn btn-app bg-success" id="forsenior">
           <i class="ion ion-bookmark"></i>Senior
@@ -56,12 +61,8 @@
             <li><a class="text-center"  id="forsixty">51 - 60</a></li>
           </ul>
         </div>
-        <button type="button" class="btn btn-success pull-right" style="margin:10px" href="#addModal" 
-            data-toggle="modal" data-target="#addModal" class="btn btn-success pull-right editbtn">
-            <i class="fa fa-pencil"></i> Add New
-        </button>
       </div>
-      <div class="row" id="females">
+      <div class="row" id="all">
         <div class="col-xs-12">
           <!-- /.box -->
 
@@ -70,10 +71,10 @@
             <div class="box-body" style="overflow-x:auto;">
               <?php
               include('../../backend/connection.php');
-              $query = "SELECT * FROM STAFF WHERE Sex ='F' AND `Disable` = 0";
+              $query = "SELECT * FROM STAFF WHERE `Disable` = 1";
               $query_run = mysqli_query($con,$query);
               ?>
-              <table id="example4" class="table table-bordered table-striped table-hover" style="width: 100%;">
+              <table id="example1" class="table table-bordered table-striped table-hover" style="width: 100%;">
                 <thead>
                 <tr>
                   <th>Staff ID</th>
@@ -82,7 +83,8 @@
                   <th>First Name</th>
                   <th>Date Of Birth</th>
                   <th>Marital Status</th>
-                  <th>Details/ Disable/Update</th>
+                  <th>Sex</th>
+                  <th>Details/ Update /Disable</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -91,23 +93,34 @@
       							foreach ($query_run as $row) {
       						?>
                <tr class="clickable-row" style="cursor: pointer;" >
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Staff_ID']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Lname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Mname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Fname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['DOB']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Marital_Status']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>">
-                  <input type="hidden" name="disable_id" value="<?php echo $row['Staff_ID']?>">
-                    <button type="submit" class="btn btn-danger pull-right openModal" id="<?php echo $usern?>" data-toggle="modal" data-target="#myModal" data-id="<?php echo $row['Staff_ID']?>" style="margin:2px"><i class="fa fa-trash"></i>
-                      Disable
+                  <td class="  text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Staff_ID']?></td>
+                  <td class="  text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Lname']?></td>
+                  <td class="  text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Mname']?></td>
+                  <td class="  text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Fname']?></td>
+                  <td class="  text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['DOB']?></td>
+                  <td class="  text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Marital_Status']?></td>
+                  <td class="  text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php if ($row['Sex'] =='M') {
+                    echo 'Male';
+                  }else {
+                    echo 'Female';
+                  }?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>">
+                  <?php
+                  if ($row['Disable'] == 1) {
+                  ?>
+                  <form action="../admin/disable.php" method="post">
+                    <input type="hidden" name="disable_id" value="<?php echo $row['Staff_ID']?>">
+                    <button type="submit" name="enable" class="btn btn-success pull-right" style="margin:2px"><i class="fa fa-check"></i>
+                      Enable
                     </button>
-                  <form action="../admin/detail.php" method="post">
-                      <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
-                      <button type="submit" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
-                      Detail
-                      </button>
-                    </form>
+                  </form>
+                  <?php
+                  }
+                  ?>
+                    <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
+                    <a href="../admin/detail.php?staff_id=<?php echo $row['Staff_ID']?>" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
+                    Detail
+                    </a>
                   </td>
                 </tr>
                 <?php
@@ -127,7 +140,162 @@
                   <th>First Name</th>
                   <th>Date Of Birth</th>
                   <th>Marital Status</th>
-                  <th>Details/ Disable/Update</th>
+                  <th>Sex</th>
+                  <th>Details/ Update /Disable</th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+      <div class="row" id="males" style="display:none;">
+        <div class="col-xs-12">
+          <!-- /.box -->
+
+          <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body" style="overflow-x:auto;">
+              <?php
+              include('../../backend/connection.php');
+              $query = "SELECT * FROM STAFF WHERE Sex = 'M' AND `Disable` = 1";
+              $query_run = mysqli_query($con,$query);
+              ?>
+              <table id="example3" class="table table-bordered table-striped table-hover" style="width: 100%;">
+                <thead>
+                <tr>
+                  <th>Staff ID</th>
+                  <th>Last Name</th>
+                  <th>Middle Name</th>
+                  <th>First Name</th>
+                  <th>Date Of Birth</th>
+                  <th>Marital Status</th>
+                  <th>Details/ Disable</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+      						if ($query_run) {
+      							foreach ($query_run as $row) {
+      						?>
+               <tr class="clickable-row" style="cursor: pointer;" >
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Staff_ID']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Lname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Mname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Fname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['DOB']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Marital_Status']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>">
+                  <form action="../admin/detail.php" method="post">
+                    <button type="submit" name="disable" class="btn btn-danger pull-right" style="margin:2px"><i class="fa fa-trash"></i>
+                      Disable
+                    </button>
+                  </form>
+                    <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
+                    <a href="../admin/detail.php?staff_id=<?php echo $row['Staff_ID']?>" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
+                    Detail
+                    </a>
+                  </td>
+                </tr>
+                <?php
+                      }
+                    }
+                    else
+                    {
+                      echo "Error ";
+                    };
+                     ?>
+                </tbody>
+                <tfoot>
+                <tr>
+                  <th>Staff ID</th>
+                  <th>Last Name</th>
+                  <th>Middle Name</th>
+                  <th>First Name</th>
+                  <th>Date Of Birth</th>
+                  <th>Marital Status</th>
+                  <th>Details/ Disable</th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+      <div class="row" id="females" style="display:none;">
+        <div class="col-xs-12">
+          <!-- /.box -->
+
+          <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body" style="overflow-x:auto;">
+              <?php
+              include('../../backend/connection.php');
+              $query = "SELECT * FROM STAFF WHERE Sex ='F' AND `Disable` = 1";
+              $query_run = mysqli_query($con,$query);
+              ?>
+              <table id="example4" class="table table-bordered table-striped table-hover" style="width: 100%;">
+                <thead>
+                <tr>
+                  <th>Staff ID</th>
+                  <th>Last Name</th>
+                  <th>Middle Name</th>
+                  <th>First Name</th>
+                  <th>Date Of Birth</th>
+                  <th>Marital Status</th>
+                  <th>Details/ Disable</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+      						if ($query_run) {
+      							foreach ($query_run as $row) {
+      						?>
+               <tr class="clickable-row" style="cursor: pointer;" >
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Staff_ID']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Lname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Mname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Fname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['DOB']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Marital_Status']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>">
+                  <form action="../admin/detail.php" method="post">
+                    <button type="submit" name="disable" class="btn btn-danger pull-right" style="margin:2px"><i class="fa fa-trash"></i>
+                      Disable
+                    </button>
+                  </form>
+                    <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
+                    <a href="../admin/detail.php?staff_id=<?php echo $row['Staff_ID']?>" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
+                    Detail
+                    </a>
+                  </td>
+                </tr>
+                <?php
+                      }
+                    }
+                    else
+                    {
+                      echo "Error ";
+                    };
+                     ?>
+                </tbody>
+                <tfoot>
+                <tr>
+                  <th>Staff ID</th>
+                  <th>Last Name</th>
+                  <th>Middle Name</th>
+                  <th>First Name</th>
+                  <th>Date Of Birth</th>
+                  <th>Marital Status</th>
+                  <th>Details/ Disable</th>
                 </tr>
                 </tfoot>
               </table>
@@ -148,7 +316,7 @@
             <div class="box-body" style="overflow-x:auto;">
               <?php
               include('../../backend/connection.php');
-              $query = "SELECT * FROM STAFF WHERE Seconded = 1 AND `Disable` = 0 AND `Sex` = 'F'";
+              $query = "SELECT * FROM STAFF WHERE Seconded = 1 AND `Disable` = 1";
               $query_run = mysqli_query($con,$query);
               ?>
               <table id="example5" class="table table-bordered table-striped table-hover" style="width: 100%;">
@@ -160,7 +328,7 @@
                   <th>First Name</th>
                   <th>Date Of Birth</th>
                   <th>Marital Status</th>
-                  <th>Details/ Disable/Update</th>
+                  <th>Details/ Disable</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -169,23 +337,22 @@
       							foreach ($query_run as $row) {
       						?>
                <tr class="clickable-row" style="cursor: pointer;" >
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Staff_ID']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Lname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Mname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Fname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['DOB']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Marital_Status']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>">
-                  <input type="hidden" name="disable_id" value="<?php echo $row['Staff_ID']?>">
-                    <button type="submit" class="btn btn-danger pull-right openModal" id="<?php echo $usern?>" data-toggle="modal" data-target="#myModal" data-id="<?php echo $row['Staff_ID']?>" style="margin:2px"><i class="fa fa-trash"></i>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Staff_ID']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Lname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Mname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Fname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['DOB']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Marital_Status']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>">
+                  <form action="../admin/detail.php" method="post">
+                    <button type="submit" name="disable" class="btn btn-danger pull-right" style="margin:2px"><i class="fa fa-trash"></i>
                       Disable
                     </button>
-                  <form action="../admin/detail.php" method="post">
-                      <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
-                      <button type="submit" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
-                      Detail
-                      </button>
-                    </form>
+                  </form>
+                    <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
+                    <a href="../admin/detail.php?staff_id=<?php echo $row['Staff_ID']?>" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
+                    Detail
+                    </a>
                   </td>
                 </tr>
                 <?php
@@ -205,7 +372,7 @@
                   <th>First Name</th>
                   <th>Date Of Birth</th>
                   <th>Marital Status</th>
-                  <th>Details/ Disable/Update</th>
+                  <th>Details/ Disable</th>
                 </tr>
                 </tfoot>
               </table>
@@ -226,7 +393,7 @@
             <div class="box-body" style="overflow-x:auto;">
               <?php
               include('../../backend/connection.php');
-              $query = "SELECT * FROM STAFF WHERE  Rank_Status ='Senior' AND `Disable` = 0 AND `Sex`= 'F'";
+              $query = "SELECT * FROM STAFF WHERE  Rank_Status ='Senior' AND `Disable` = 1";
               $query_run = mysqli_query($con,$query);
               ?>
               <table id="example6" class="table table-bordered table-striped table-hover" style="width: 100%;">
@@ -238,7 +405,7 @@
                   <th>First Name</th>
                   <th>Date Of Birth</th>
                   <th>Marital Status</th>
-                  <th>Details/ Disable/Update</th>
+                  <th>Details/ Disable</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -247,23 +414,22 @@
       							foreach ($query_run as $row) {
       						?>
                <tr class="clickable-row" style="cursor: pointer;" >
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Staff_ID']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Lname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Mname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Fname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['DOB']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Marital_Status']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>">
-                  <input type="hidden" name="disable_id" value="<?php echo $row['Staff_ID']?>">
-                    <button type="submit" class="btn btn-danger pull-right openModal" id="<?php echo $usern?>" data-toggle="modal" data-target="#myModal" data-id="<?php echo $row['Staff_ID']?>" style="margin:2px"><i class="fa fa-trash"></i>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Staff_ID']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Lname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Mname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Fname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['DOB']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Marital_Status']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>">
+                  <form action="../admin/detail.php" method="post">
+                    <button type="submit" name="disable" class="btn btn-danger pull-right" style="margin:2px"><i class="fa fa-trash"></i>
                       Disable
                     </button>
-                  <form action="../admin/detail.php" method="post">
-                      <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
-                      <button type="submit" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
-                      Detail
-                      </button>
-                    </form>
+                  </form>
+                    <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
+                    <a href="../admin/detail.php?staff_id=<?php echo $row['Staff_ID']?>" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
+                    Detail
+                    </a>
                   </td>
                 </tr>
                 <?php
@@ -283,7 +449,7 @@
                   <th>First Name</th>
                   <th>Date Of Birth</th>
                   <th>Marital Status</th>
-                  <th>Details/ Disable/Update</th>
+                  <th>Details/ Disable</th>
                 </tr>
                 </tfoot>
               </table>
@@ -304,7 +470,7 @@
             <div class="box-body" style="overflow-x:auto;">
               <?php
               include('../../backend/connection.php');
-              $query = "SELECT * FROM STAFF WHERE  Rank_Status ='Junior' AND `Disable` = 0 AND `Sex` = 'F'";
+              $query = "SELECT * FROM STAFF WHERE  Rank_Status ='Junior' AND `Disable` = 1";
               $query_run = mysqli_query($con,$query);
               ?>
               <table id="example7" class="table table-bordered table-striped table-hover" style="width: 100%;">
@@ -316,7 +482,7 @@
                   <th>First Name</th>
                   <th>Date Of Birth</th>
                   <th>Marital Status</th>
-                  <th>Details/ Disable/Update</th>
+                  <th>Details/ Disable</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -332,17 +498,15 @@
                   <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['DOB']?></td>
                   <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Marital_Status']?></td>
                   <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>">
-                  <input type="hidden" name="disable_id" value="<?php echo $row['Staff_ID']?>">
-                    <button type="submit" class="btn btn-danger pull-right openModal" id="<?php echo $usern?>" data-toggle="modal" data-target="#myModal" data-id="<?php echo $row['Staff_ID']?>" style="margin:2px"><i class="fa fa-trash"></i>
+                  <form action="../admin/detail.php" method="post">
+                    <button type="submit" name="disable" class="btn btn-danger pull-right" style="margin:2px"><i class="fa fa-trash"></i>
                       Disable
                     </button>
+                  </form>
                     <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
-                    <form action="../admin/detail.php" method="post">
-                      <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
-                      <button type="submit" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
-                      Detail
-                      </button>
-                    </form>
+                    <a href="../admin/detail.php?staff_id=<?php echo $row['Staff_ID']?>" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
+                    Detail
+                    </a>
                   </td>
                 </tr>
                 <?php
@@ -362,7 +526,7 @@
                   <th>First Name</th>
                   <th>Date Of Birth</th>
                   <th>Marital Status</th>
-                  <th>Details/ Disable/Update</th>
+                  <th>Details/ Disable</th>
                 </tr>
                 </tfoot>
               </table>
@@ -384,7 +548,7 @@
               <?php
               include('../../backend/connection.php');
               $date = 
-              $query = "SELECT `Staff_ID`, `Lname`, `Mname`, `Fname`, (YEAR(CURRENT_DATE)-YEAR(DOB)) AS Age, `Marital_Status` FROM STAFF WHERE YEAR(CURRENT_DATE)-YEAR(DOB) < 31 AND `Disable` = 0 AND `Sex` = 'F'";
+              $query = "SELECT `Staff_ID`, `Lname`, `Mname`, `Fname`, (YEAR(CURRENT_DATE)-YEAR(DOB)) AS Age, `Marital_Status` FROM STAFF WHERE YEAR(CURRENT_DATE)-YEAR(DOB) < 31 AND `Disable` = 1";
               $query_run = mysqli_query($con,$query);
               ?>
               <table id="example8" class="table table-bordered table-striped table-hover" style="width: 100%;">
@@ -396,7 +560,7 @@
                   <th>First Name</th>
                   <th>Age</th>
                   <th>Marital Status</th>
-                  <th>Details/ Disable/Update</th>
+                  <th>Details/ Disable</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -412,16 +576,15 @@
                   <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Age']?></td>
                   <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Marital_Status']?></td>
                   <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>">
-                  <input type="hidden" name="disable_id" value="<?php echo $row['Staff_ID']?>">
-                    <button type="submit" class="btn btn-danger pull-right openModal" id="<?php echo $usern?>" data-toggle="modal" data-target="#myModal" data-id="<?php echo $row['Staff_ID']?>" style="margin:2px"><i class="fa fa-trash"></i>
+                  <form action="../admin/detail.php" method="post">
+                    <button type="submit" name="disable" class="btn btn-danger pull-right" style="margin:2px"><i class="fa fa-trash"></i>
                       Disable
                     </button>
-                  <form action="../admin/detail.php" method="post">
-                      <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
-                      <button type="submit" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
-                      Detail
-                      </button>
-                    </form>
+                  </form>
+                    <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
+                    <a href="../admin/detail.php?staff_id=<?php echo $row['Staff_ID']?>" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
+                    Detail
+                    </a>
                   </td>
                 </tr>
                 <?php
@@ -441,7 +604,7 @@
                   <th>First Name</th>
                   <th>Age</th>
                   <th>Marital Status</th>
-                  <th>Details/ Disable/Update</th>
+                  <th>Details/ Disable</th>
                 </tr>
                 </tfoot>
               </table>
@@ -462,7 +625,7 @@
             <div class="box-body" style="overflow-x:auto;">
               <?php
               include('../../backend/connection.php');
-              $query = "SELECT `Staff_ID`, `Lname`, `Mname`, `Fname`, (YEAR(CURRENT_DATE)-YEAR(DOB)) AS Age, `Marital_Status` FROM STAFF WHERE YEAR(CURRENT_DATE)-YEAR(DOB) > 30 AND YEAR(CURRENT_DATE)-YEAR(DOB) < 41 AND `Disable` = 0 AND `Sex`='F'";
+              $query = "SELECT `Staff_ID`, `Lname`, `Mname`, `Fname`, (YEAR(CURRENT_DATE)-YEAR(DOB)) AS Age, `Marital_Status` FROM STAFF WHERE YEAR(CURRENT_DATE)-YEAR(DOB) > 30 AND YEAR(CURRENT_DATE)-YEAR(DOB) < 41 AND `Disable` = 1";
               $query_run = mysqli_query($con,$query);
               ?>
               <table id="example9" class="table table-bordered table-striped table-hover" style="width: 100%;">
@@ -474,7 +637,7 @@
                   <th>First Name</th>
                   <th>Age</th>
                   <th>Marital Status</th>
-                  <th>Details/ Disable/Update</th>
+                  <th>Details/ Disable</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -483,23 +646,22 @@
       							foreach ($query_run as $row) {
       						?>
                <tr class="clickable-row" style="cursor: pointer;" >
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Staff_ID']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Lname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Mname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Fname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Age']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Marital_Status']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>">
-                  <input type="hidden" name="disable_id" value="<?php echo $row['Staff_ID']?>">
-                    <button type="submit" class="btn btn-danger pull-right openModal" id="<?php echo $usern?>" data-toggle="modal" data-target="#myModal" data-id="<?php echo $row['Staff_ID']?>" style="margin:2px"><i class="fa fa-trash"></i>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Staff_ID']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Lname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Mname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Fname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Age']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Marital_Status']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>">
+                  <form action="../admin/detail.php" method="post">
+                    <button type="submit" name="disable" class="btn btn-danger pull-right" style="margin:2px"><i class="fa fa-trash"></i>
                       Disable
                     </button>
-                  <form action="../admin/detail.php" method="post">
-                      <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
-                      <button type="submit" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
-                      Detail
-                      </button>
-                    </form>
+                  </form>
+                    <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
+                    <a href="../admin/detail.php?staff_id=<?php echo $row['Staff_ID']?>" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
+                    Detail
+                    </a>
                   </td>
                 </tr>
                 <?php
@@ -519,7 +681,7 @@
                   <th>First Name</th>
                   <th>Age</th>
                   <th>Marital Status</th>
-                  <th>Details/ Disable/Update</th>
+                  <th>Details/ Disable</th>
                 </tr>
                 </tfoot>
               </table>
@@ -540,7 +702,7 @@
             <div class="box-body" style="overflow-x:auto;">
               <?php
               include('../../backend/connection.php');
-              $query = "SELECT `Staff_ID`, `Lname`, `Mname`, `Fname`, (YEAR(CURRENT_DATE)-YEAR(DOB)) AS Age, `Marital_Status` FROM STAFF WHERE YEAR(CURRENT_DATE)-YEAR(DOB) > 40 AND YEAR(CURRENT_DATE)-YEAR(DOB) < 51 AND `Disable` = 0 AND `Sex` = 'F'";
+              $query = "SELECT `Staff_ID`, `Lname`, `Mname`, `Fname`, (YEAR(CURRENT_DATE)-YEAR(DOB)) AS Age, `Marital_Status` FROM STAFF WHERE YEAR(CURRENT_DATE)-YEAR(DOB) > 40 AND YEAR(CURRENT_DATE)-YEAR(DOB) < 51 AND `Disable` = 1";
               $query_run = mysqli_query($con,$query);
               ?>
               <table id="example10" class="table table-bordered table-striped table-hover" style="width: 100%;">
@@ -552,7 +714,7 @@
                   <th>First Name</th>
                   <th>Age</th>
                   <th>Marital Status</th>
-                  <th>Details/ Disable/Update</th>
+                  <th>Details/ Disable</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -561,23 +723,22 @@
       							foreach ($query_run as $row) {
       						?>
                <tr class="clickable-row" style="cursor: pointer;" >
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Staff_ID']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Lname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Mname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Fname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Age']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Marital_Status']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>">
-                  <input type="hidden" name="disable_id" value="<?php echo $row['Staff_ID']?>">
-                    <button type="submit" class="btn btn-danger pull-right openModal" id="<?php echo $usern?>" data-toggle="modal" data-target="#myModal" data-id="<?php echo $row['Staff_ID']?>" style="margin:2px"><i class="fa fa-trash"></i>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Staff_ID']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Lname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Mname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Fname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Age']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Marital_Status']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>">
+                  <form action="../admin/detail.php" method="post">
+                    <button type="submit" name="disable" class="btn btn-danger pull-right" style="margin:2px"><i class="fa fa-trash"></i>
                       Disable
                     </button>
-                  <form action="../admin/detail.php" method="post">
-                      <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
-                      <button type="submit" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
-                      Detail
-                      </button>
-                    </form>
+                  </form>
+                    <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
+                    <a href="../admin/detail.php?staff_id=<?php echo $row['Staff_ID']?>" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
+                    Detail
+                    </a>
                   </td>
                 </tr>
                 <?php
@@ -597,7 +758,7 @@
                   <th>First Name</th>
                   <th>Age</th>
                   <th>Marital Status</th>
-                  <th>Details/ Disable/Update</th>
+                  <th>Details/ Disable</th>
                 </tr>
                 </tfoot>
               </table>
@@ -618,7 +779,7 @@
             <div class="box-body" style="overflow-x:auto;">
               <?php
               include('../../backend/connection.php');
-              $query = "SELECT `Staff_ID`, `Lname`, `Mname`, `Fname`, (YEAR(CURRENT_DATE)-YEAR(DOB)) AS Age, `Marital_Status` FROM STAFF WHERE YEAR(CURRENT_DATE)-YEAR(DOB) > 50 AND YEAR(CURRENT_DATE)-YEAR(DOB) < 61 AND `Disable` = 0 AND `Sex` = 'F'";
+              $query = "SELECT `Staff_ID`, `Lname`, `Mname`, `Fname`, (YEAR(CURRENT_DATE)-YEAR(DOB)) AS Age, `Marital_Status` FROM STAFF WHERE YEAR(CURRENT_DATE)-YEAR(DOB) > 50 AND YEAR(CURRENT_DATE)-YEAR(DOB) < 61 AND `Disable` = 1";
               $query_run = mysqli_query($con,$query);
               ?>
               <table id="example11" class="table table-bordered table-striped table-hover" style="width: 100%;">
@@ -630,7 +791,7 @@
                   <th>First Name</th>
                   <th>Age</th>
                   <th>Marital Status</th>
-                  <th>Details/ Disable/Update</th>
+                  <th>Details/ Disable</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -639,23 +800,22 @@
       							foreach ($query_run as $row) {
       						?>
                <tr class="clickable-row" style="cursor: pointer;" >
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Staff_ID']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Lname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Mname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Fname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Age']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Marital_Status']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>">
-                    <input type="hidden" name="disable_id" value="<?php echo $row['Staff_ID']?>">
-                      <button type="submit" class="btn btn-danger pull-right openModal" id="<?php echo $usern?>" data-toggle="modal" data-target="#myModal" data-id="<?php echo $row['Staff_ID']?>" style="margin:2px"><i class="fa fa-trash"></i>
-                        Disable
-                      </button>
-                    <form action="../admin/detail.php" method="post">
-                      <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
-                      <button type="submit" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
-                      Detail
-                      </button>
-                    </form>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Staff_ID']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Lname']?></td>
+                  <td class="text-muted"data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Mname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Fname']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Age']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Marital_Status']?></td>
+                  <td class="text-muted" data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>">
+                  <form action="../admin/detail.php" method="post">
+                    <button type="submit" name="disable" class="btn btn-danger pull-right" style="margin:2px"><i class="fa fa-trash"></i>
+                      Disable
+                    </button>
+                  </form>
+                    <input type="hidden" name="store_id" value="<?php echo $row['Staff_ID']?>">
+                    <a href="../admin/detail.php?staff_id=<?php echo $row['Staff_ID']?>" name="detail" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
+                    Detail
+                    </a>
                   </td>
                 </tr>
                 <?php
@@ -675,7 +835,7 @@
                   <th>First Name</th>
                   <th>Age</th>
                   <th>Marital Status</th>
-                  <th>Details/ Disable/Update</th>
+                  <th>Details/ Disable</th>
                 </tr>
                 </tfoot>
               </table>
@@ -687,7 +847,7 @@
         <!-- /.col -->
       </div>
       <!-- /.row -->
-      <div style="margin-top:5%;" class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div style="margin-top:5%;" class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content make-change"></div>
         </div>
@@ -704,9 +864,9 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
               </div>
               <div class="modal-body text-center">
-                <h3>Staff Disabled</h3>
+                <h3>Update Successful</h3>
                 <div class="form-group">
-                <img src="../../dist/img/close-circle.svg" alt="" style="width:50%">
+                <img src="../../dist/img/checkmark-circle.svg" alt="" style="width:50%">
                 </div>
               </div>
               <div class="modal-footer">
@@ -740,13 +900,6 @@
   }
 ?>
 <script>
-    $('.openModal').click(function(){
-      var id = $(this).attr('data-id');
-      var admin = $(this).attr('id');
-      $.ajax({url:"ajax_staff_disable.php?id="+id+"&admin="+admin,cache:false,success:function(result){
-          $(".make-change").html(result);
-      }});
-    });
   $(function () {
     $('#example1').DataTable()
     $('#example3').DataTable()
@@ -767,6 +920,8 @@
       'autoWidth'   : false
     })
   })
+  const all = document.getElementById('all');
+  const males = document.getElementById('males');
   const females = document.getElementById('females');
   const seconded = document.getElementById('seconded');
   const senior = document.getElementById('senior');
@@ -775,6 +930,7 @@
   const forty = document.getElementById('forty');
   const fifty = document.getElementById('fifty');
   const sixty = document.getElementById('sixty');
+  const formales = document.getElementById('formales');
   const forfemales = document.getElementById('forfemales');
   const forsecond = document.getElementById('forsecond');
   const forsenior = document.getElementById('forsenior');
@@ -783,7 +939,10 @@
   const forforty = document.getElementById('forforty');
   const forfifty = document.getElementById('forfifty');
   const forsixty = document.getElementById('forsixty');
+  const forall = document.getElementById('forall');
+  forall.addEventListener("click", switchToAll);
   forfemales.addEventListener("click",switchToFemales);
+  formales.addEventListener("click",switchToMales);
   forsecond.addEventListener("click",switchToSecond);
   forsenior.addEventListener("click",switchToSenior);
   forjunior.addEventListener("click",switchToJunior);
@@ -791,8 +950,22 @@
   forforty.addEventListener("click",switchToForty);
   forfifty.addEventListener("click",switchToFifty);
   forsixty.addEventListener("click",switchToSixty);
-
+  function switchToAll() {
+    all.style.display="inherit";
+    males.style.display="none";
+    females.style.display="none";
+  forforty.addEventListener("click",switchToForty);
+    seconded.style.display="none";
+    senior.style.display="none";
+    junior.style.display="none";
+    thirty.style.display="none";
+    forty.style.display="none";
+    fifty.style.display="none";
+    sixty.style.display="none";
+  }
   function switchToFemales() {
+    all.style.display="none";
+    males.style.display="none";
     females.style.display="inherit";
     seconded.style.display="none";
     senior.style.display="none";
@@ -802,7 +975,21 @@
     fifty.style.display="none";
     sixty.style.display="none";
   }
+  function switchToMales() {
+    all.style.display="none";
+    males.style.display="inherit";
+    females.style.display="none";
+    seconded.style.display="none";
+    senior.style.display="none";
+    junior.style.display="none";
+    thirty.style.display="none";
+    forty.style.display="none";
+    fifty.style.display="none";
+    sixty.style.display="none";
+  }
   function switchToSecond() {
+    all.style.display="none";
+    males.style.display="none";
     females.style.display="none";
     seconded.style.display="inherit";
     senior.style.display="none";
@@ -813,6 +1000,8 @@
     sixty.style.display="none";
   }
   function switchToSenior() {
+    all.style.display="none";
+    males.style.display="none";
     females.style.display="none";
     seconded.style.display="none";
     senior.style.display="inherit";
@@ -823,6 +1012,8 @@
     sixty.style.display="none";
   }
   function switchToJunior() {
+    all.style.display="none";
+    males.style.display="none";
     females.style.display="none";
     seconded.style.display="none";
     senior.style.display="none";
@@ -833,6 +1024,8 @@
     sixty.style.display="none";
   }
   function switchToThirty() {
+    all.style.display="none";
+    males.style.display="none";
     females.style.display="none";
     seconded.style.display="none";
     senior.style.display="none";
@@ -843,6 +1036,8 @@
     sixty.style.display="none";
   }
   function switchToForty() {
+    all.style.display="none";
+    males.style.display="none";
     females.style.display="none";
     seconded.style.display="none";
     senior.style.display="none";
@@ -853,6 +1048,8 @@
     sixty.style.display="none";
   }
   function switchToFifty() {
+    all.style.display="none";
+    males.style.display="none";
     females.style.display="none";
     seconded.style.display="none";
     senior.style.display="none";
@@ -863,6 +1060,8 @@
     sixty.style.display="none";
   }
   function switchToSixty() {
+    all.style.display="none";
+    males.style.display="none";
     females.style.display="none";
     seconded.style.display="none";
     senior.style.display="none";

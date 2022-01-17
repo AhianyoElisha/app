@@ -46,27 +46,10 @@
           </ul>
         </li>
         <li>
-          <a href="../../pages/mailbox/mailbox.php">
+          <a href="../mailbox/mailbox.html">
             <i class="fa fa-envelope"></i> <span>Submitted Leaves</span>
             <span class="pull-right-container">
-              <small class="label pull-right bg-red">0</small>
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="disabled.php">
-            <i class="fa fa-envelope"></i> <span>Disabled(Inactive) Staff</span>
-            <span class="pull-right-container">
-            <?php
-                include('../../backend/connection.php');
-                $query = "SELECT COUNT(*) as total FROM STAFF WHERE `Disable` = 1";
-                $query_run = mysqli_query($con,$query);
-                foreach ($query_run as $row) {
-            ?>
-              <small class="label pull-right bg-red"><?php echo $row['total']?></small>
-              <?php
-                }
-              ?>
+              <small class="label pull-right bg-red">5</small>
             </span>
           </a>
         </li>

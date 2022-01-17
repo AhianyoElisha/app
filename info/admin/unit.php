@@ -1,5 +1,6 @@
 <?php
   include('../../backend/session.php');
+  $usern = $_SESSION['admin'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -43,23 +44,14 @@
               include('../../backend/connection.php');
               $con = mysqli_connect($servername,$username,$password);
               $db = mysqli_select_db($con,$dbname);
-              $query = "SELECT * FROM STAFF";
+              $query = "SELECT * FROM UNIT, DIRECTORATE WHERE Directorate_ID = DirID";
               $query_run = mysqli_query($con,$query);
               ?>
               <table id="example1" class="table table-bordered table-striped table-hover" style="width: 100%;">
                 <thead>
                 <tr>
-                  <th>Staff ID</th>
-                  <th>Last Name</th>
-                  <th>Middle Name</th>
-                  <th>First Name</th>
-                  <th>Date Of Birth</th>
-                  <th>Marital Status</th>
-                  <th>Unit ID</th>
-                  <th>Highest Qualifcation</th>
-                  <th>Rank</th>
-                  <th>Pnone Number</th>
-                  <th>Sex</th>
+                  <th>Unit</th>
+                  <th>Directorate</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -67,18 +59,9 @@
       						if ($query_run) {
       							foreach ($query_run as $row) {
       						?>
-               <tr class="clickable-row" data-href="../examples/invoice.html" style="cursor: pointer;" >
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Staff_ID']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Lname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Mname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Fname']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['DOB']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Marital_Status']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['UnitID']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Highest_Qualification']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Rank_Status']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>">0<?php echo $row['Phone_number']?></td>
-                  <td data_id="<?php echo $row['Staff_ID']?>" id="<?php echo $row['Staff_ID']?>"><?php echo $row['Sex']?></td>
+               <tr class="clickable-row" data-href="" style="cursor: pointer;" >
+                  <td data_id="<?php echo $row['Unit_ID']?>" id="<?php echo $row['Unit_ID']?>"><?php echo $row['Unit_Name']?></td>
+                  <td data_id="<?php echo $row['Unit_ID']?>" id="<?php echo $row['Unit_ID']?>"><?php echo $row['Directorate_Name']?></td>
                 </tr>
                 <?php
                       }
@@ -91,17 +74,8 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th>Staff ID</th>
-                  <th>Last Name</th>
-                  <th>Middle Name</th>
-                  <th>First Name</th>
-                  <th>Date Of Birth</th>
-                  <th>Marital Status</th>
-                  <th>Unit ID</th>
-                  <th>Highest Qualifcation</th>
-                  <th>Rank</th>
-                  <th>Pnone Number</th>
-                  <th>Sex</th>
+                  <th>Unit</th>
+                  <th>Directorate</th>
                 </tr>
                 </tfoot>
               </table>

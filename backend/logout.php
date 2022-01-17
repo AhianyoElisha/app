@@ -12,11 +12,13 @@ if (isset($_GET['logout_staff'])) {
     $result3 = mysqli_query($con, $sql3);
     if($result3){
         session_destroy();
-    header("location:../login.php");
+        header("location:../lockscreen.php?id=$usern");
     }
     else {
-        echo 'staff error';
+        session_destroy();
+        header("location:../login.php");
     }
+    $_POST = array();
 }
 
 
@@ -26,11 +28,14 @@ if (isset($_GET['logout'])) {
     $result1 = mysqli_query($con, $sql1);
     if($result1){
         session_destroy();
-        header("location:../login.php");
+        header("location:../lockscreen.php?id=$admin");
     }
     else {
-        echo 'admin error';
+        session_destroy();
+        header("location:../login.php");
     }
+    $_POST = array();
+
 }
 
 ?>

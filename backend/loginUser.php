@@ -27,24 +27,24 @@ if (isset($_POST['login'])) {
                 $_SESSION['last_login_timestamp'] = htmlentities(time());
                 header("location: ../info/staff/index.php");
              }else {
-                 echo 'couldnt move to next page';
+                header('location:../login.php?Error= Credentials are Incorrect or not In Existence, Try Again');
              }
         }
-    }else {
-        echo 'error';
-    }
+        }else {
+            header('location:../login.php?Error= Credentials are Incorrect or not In Existence, Try Again');
+        }
     }
     if($result1){
         if($result->num_rows > 0){
-         while($row = $result->fetch_assoc()){
-            if($row['ID'] = $usern && $row['entry_password'] = $passw){
-                $_SESSION['admin'] = htmlentities($usern);
-                $_SESSION['admin_password'] = htmlentities($passw);
-                $_SESSION['last_login_timestamp'] = htmlentities(time());
-                header("location: ../info/admin/index.php");
-             }
+            while($row = $result->fetch_assoc()){
+                if($row['ID'] = $usern && $row['entry_password'] = $passw){
+                    $_SESSION['admin'] = htmlentities($usern);
+                    $_SESSION['admin_password'] = htmlentities($passw);
+                    $_SESSION['last_login_timestamp'] = htmlentities(time());
+                    header("location: ../info/admin/index.php");
+                }
+            }
         }
-    }
     }
 
     if(!$result1 && !$result3){

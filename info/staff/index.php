@@ -1,6 +1,6 @@
 <?php
   require_once('../../backend/session.php');
-  require_once('../../backend/session.php');
+  require_once('../../backend/upload.php');
   $usern = $_SESSION['staff'];
   $passw = $_SESSION['staff_password'];
 ?>
@@ -10,12 +10,12 @@
 
   <title>MOE| Dashboard</title>
   <!-- <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css"> -->
-  <?php include('../../frontend/head.php')?>
+  <?php include('../../frontend/staff/head.php')?>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper" >
 
-<?php include('../../frontend/header.php')?>
+<?php include('../../frontend/staff/header.php')?>
   <!-- Left side column. contains the logo and sidebar -->
   <?php include('../../frontend/left-aside-staff.php')?>
   <!-- Content Wrapper. Contains page content -->
@@ -38,7 +38,7 @@
     <!-- Profile Image -->
       <div class="box box-primary">
         <div class="box-body box-profile">
-          <img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
+          <img class="profile-user-img img-responsive img-circle" src="../../backend/uploads/user-profile-svgrepo-com.svg" alt="User profile picture">
 
           <h3 class="profile-username text-center">Nina Mcintire</h3>
 
@@ -50,7 +50,7 @@
             Select image to upload:
               </label>
               <div>
-                <input type="file" class="btn btn-primary btn-block" name="fileToUpload" id="fileToUpload">
+                <input type="file" class="btn btn-primary btn-block" name="file" id="picture">
               </div>
             </div>
             <input type="submit"class="btn btn-primary btn-block" value="Upload Image" name="upload">

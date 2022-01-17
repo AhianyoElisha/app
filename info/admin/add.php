@@ -115,6 +115,23 @@
 													</div>
 												</div>
 												<div class="form-group">
+													<label for="middlename" class="col-sm-3 control-label">Seconded/ Actual Staff</label>
+													<div class="col-sm-8">
+														<div class="radio col-sm-4">
+															<label>
+															<input type="radio" name="seconded" id="optionsRadios1" value=1>
+															Seconded Staff
+															</label>
+														</div>
+														<div class="radio col-sm-4">
+															<label>
+															<input type="radio" name="seconded" id="optionsRadios2" value=0>
+															Actual Staff
+															</label>
+														</div>
+													</div>
+												</div>
+												<div class="form-group">
 													<label for="highest qualification" class="col-sm-3 control-label">Highest Qualification</label>
 													<div class="col-sm-9">
 														<textarea class="form-control" name="highest_qualification" rows="3" placeholder="Enter Highest Qualification"></textarea>

@@ -1,5 +1,6 @@
 <?php
   include('../../backend/session.php');
+  $usern = $_SESSION['admin'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -54,6 +55,7 @@
                     <th>Staff Name</th>
                     <th>Status</th>
                     <th>Last Login</th>
+                    <th>Last Logout</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -75,6 +77,7 @@
                     <td>
                       <div class="sparkbar" data-color="#00a65a" data-height="20"><?php echo date("F j, Y, g:i a", strtotime($row['last_seen']));?></div>
                     </td>
+                  <td><?php echo date("F j, Y, g:i a", strtotime($row['last_logout']));?></td>
                   </tr>
                   <?php
                       }

@@ -1,10 +1,7 @@
 <?php
   require_once('../../backend/session.php');
   $usern = $_SESSION['admin'];
-  $passw = $_SESSION['admin_password'];
-  $_SESSION['last_login_timestamp'];
-?>
-<?php
+  header("Cache-Control: no cache");
     $url1=$_SERVER['REQUEST_URI'];
     header("Refresh: 60; URL=$url1");
 ?>
@@ -36,7 +33,7 @@
     $query_run4 = mysqli_query($con,$query4);
     $query5 = "SELECT COUNT(*) as total5 FROM NATIONAL_SERVICE";
     $query_run5 = mysqli_query($con,$query5);
-    $query6 = "SELECT COUNT(*) as total6 FROM INTERNSHIP";
+    $query6 = "SELECT COUNT(*) as total6 FROM STAFF WHERE Seconded = 1";
     $query_run6 = mysqli_query($con,$query6);
     $query7 = "SELECT COUNT(*) as total7 FROM LEAVE_RECORD";
     $query_run7 = mysqli_query($con,$query7);
@@ -55,8 +52,7 @@
         <small>Version 2.0</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
+        <li><i class="fa fa-dashboard"></i> Home</li>
       </ol>
     </section>
 
@@ -249,7 +245,7 @@
             </div>
             <!-- /.box-body -->
             <div class="box-footer clearfix">
-              <a href="fullstatus.php" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+              <a href="fullstatus.php" class="btn btn-sm btn-default btn-flat pull-right">View All Last Logins</a>
             </div>
             <!-- /.box-footer -->
           </div>
@@ -354,7 +350,7 @@
             <span class="info-box-icon"><i class="ion-ios-book"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">INTERNS</span>
+              <span class="info-box-text">SECONDMENT STAFF</span>
               <span class="info-box-number"><?php echo $row['total6']?></span>
             </div>
             <!-- /.info-box-content -->

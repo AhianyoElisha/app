@@ -1,5 +1,6 @@
 <?php
   require_once('../../backend/session.php');
+  $usern = $_SESSION['admin'];
 ?>
 <!DOCTYPE html>
 <html>

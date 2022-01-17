@@ -1,5 +1,6 @@
 <?php
   require_once('../../backend/session.php');
+  $usern = $_SESSION['admin'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -23,7 +24,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="index.php"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Data tables</li>
+        <li class="active">Directorate</li>
       </ol>
     </section>
 
@@ -42,16 +43,17 @@
               <?php
               include('../../backend/connection.php');
               $query = "SELECT Directorate_ID,CONCAT_WS(' ',Lname,Mname,Fname) AS Name,
-              Directorate_Name 
+              Directorate_Name,profile 
               FROM STAFF,DIRECTORATE WHERE `Staff_ID` = `Directorate_Head_ID`";
               $query_run = mysqli_query($con,$query);
               ?>
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Directorate ID</th>
-                  <th>Head of Directorate</th>
-                  <th>Name of Directorate</th>
+                  <th class="text-center">Profile</th>
+                  <th class="text-center">Head of Directorate</th>
+                  <th class="text-center">Name of Directorate</th>
+                  <th class="text-center">Change Director</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -60,12 +62,28 @@
       							foreach ($query_run as $row) {
       						?>
                 <a>
-                  <tr class='clickable-row' data-href='directoratemembers.php?directorate_id=<?php echo $row['Directorate_ID']?>' style="cursor: pointer;">
-                    <td data_id="<?php echo $row['Directorate_ID']?>" id="<?php echo $row['Directorate_ID']?>"><?php echo $row['Directorate_ID']?></td>
-                    <td data_id="<?php echo $row['Directorate_ID']?>" id="<?php echo $row['Directorate_ID']?>"><?php echo $row['Name']?></td>
-                    <td data_id="<?php echo $row['Directorate_ID']?>" id="<?php echo $row['Directorate_ID']?>"><?php echo $row['Directorate_Name']?></td>
+                  <tr style="cursor: pointer;">
+                    <td data_id="<?php echo $row['Directorate_ID']?>" id="<?php echo $row['Directorate_ID']?>">
+                      <img class="profile-user-img img-responsive img-circle" style="width:70px;height:70px" src="../../uploads/<?php echo $row['profile']?>" alt="User profile picture">
+                    </td>
+                    <td data_id="<?php echo $row['Directorate_ID']?>" id="<?php echo $row['Directorate_ID']?>" style="vertical-align:middle;" class="text-center">
+                      <?php echo $row['Name']?>
+                    </td>
+                    <td data_id="<?php echo $row['Directorate_ID']?>" id="<?php echo $row['Directorate_ID']?>" style="vertical-align:middle;" class="text-center">
+                      <?php echo $row['Directorate_Name']?>
+                    </td>
+                    <td data_id="<?php echo $row['Directorate_ID']?>" id="<?php echo $row['Directorate_ID']?>" style="vertical-align:middle;margin-right:auto">
+                    <button type="submit" class="btn btn-success pull-right openModal" id="<?php echo $usern?>" data-toggle="modal" data-target="#myModal" data-id="<?php echo $row['Directorate_ID']?>" style="margin:2px"><i class="fa fa-pencil"></i>
+                        Change
+                      </button>
+                      <form action="directoratemembers.php" method="post">
+                        <input type="hidden" name="directorate_id" value ='<?php echo $row['Directorate_ID']?>'>
+                      <button type="submit" name="more" class="btn btn-primary pull-right" style="margin:2px;text-decoration:none;"><i class="fa fa-file"></i>
+                      Detail
+                      </button>
+                    </form>
+                    </td>
                   </tr>
-                </a>
                 <?php
                       }
                     }
@@ -77,9 +95,10 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                <th>Directorate ID</th>
-                  <th>Head of Directorate</th>
-                  <th>Name of Directorate</th>
+                  <th class="text-center">Profile</th>
+                  <th class="text-center">Head of Directorate</th>
+                  <th class="text-center">Name of Directorate</th>
+                  <th class="text-center">Change Director</th>
                 </tr>
                 </tfoot>
               </table>
@@ -91,6 +110,38 @@
         <!-- /.col -->
       </div>
       <!-- /.row -->
+      <div style="margin-top:5%;" class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+    			</div>
+    		</div>
+            </div>
+        </div>
+      </div>
+      <div style="margin-top:5%;" class="modal " id="myModalAdmin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content make-change-admin"></div>
+        </div>
+      </div>
+      <div style="margin-top:5%;" class="modal " id="successModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:60%;margin:auto;">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              </div>
+              <div class="modal-body text-center">
+                <h3>Staff Disabled</h3>
+                <div class="form-group">
+                <img src="../../dist/img/close-circle.svg" alt="" style="width:50%">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" style="margin-left:10px;" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
     <!-- /.content -->
   </div>
@@ -110,6 +161,13 @@
 <?php include('../../frontend/js.php')?>
 <!-- page script -->
 <script>
+      $('.openModal').click(function(){
+      var id = $(this).attr('data-id');
+      var admin = $(this).attr('id');
+      $.ajax({url:"change.php?id="+id+"&admin="+admin,cache:false,success:function(result){
+          $(".make-change").html(result);
+      }});
+    });
   $(function () {
     $('#example1').DataTable()
     $('#example2').DataTable({

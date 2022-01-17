@@ -15,6 +15,7 @@
 						<div class="nav-tabs-custom">
 							<ul class="nav nav-tabs">
 							<li class="active"><a href="#personal" data-toggle="tab">Personal</a></li>
+							<li><a href="#profile" data-toggle="tab">Profile</a></li>
 							<li><a href="#promotion" data-toggle="tab">Promotion</a></li>
 							<li><a href="#training" data-toggle="tab">Training</a></li>
 							<li><a href="#leave" data-toggle="tab">Leave</a></li>
@@ -33,16 +34,13 @@
 										<div class="box-header with-border">
 											<h3 class="box-title">Personal Information</h3>
 										</div>
-										<form class="form-horizontal" method="POST" action="../../backend/editback.php">
+										<form class="form-horizontal" method="POST" action="../../backend/editback.php" enctype="multipart/form-data">
 											<div class="box-body">
+												<input type="hidden" name="staff_id" value="<?php echo $row['Staff_ID']?>">
 												<div class="form-group">
-													<input type="hidden" name="staff_id" value="<?php echo $row['Staff_ID']?>">
-													<img class="profile-user-img img-responsive img-circle" src="../../dist/img/profiles/user-profile-svgrepo-com.svg" alt="User profile picture">	
-												</div>
-												<div class="form-group">
-													<label for="lastname" class="col-sm-3 control-label">First Name</label>
+													<label for="firstname" class="col-sm-3 control-label">First Name</label>
 													<div class="col-sm-9">
-														<input type="text" class="form-control" name="fname"  value="<?php echo $row['Fname']?>" placeholder="Last Name">
+														<input type="text" class="form-control" name="fname"  value="<?php echo $row['Fname']?>" placeholder="First Name">
 													</div>
 												</div>
 												<div class="form-group">
@@ -178,6 +176,44 @@
 													</div>
 												</div>
 												<div class="form-group">
+													<label for="middlename" class="col-sm-3 control-label">Seconded/ Actual Staff</label>
+													<div class="col-sm-8">
+														<?php
+														if ($row['Seconded'] == 0) {
+														?>
+														<div class="radio col-sm-4">
+															<label>
+															<input type="radio" name="seconded" id="optionsRadios1" value="0" Checked>
+															Actual Staff
+															</label>
+														</div>
+														<div class="radio col-sm-4">
+															<label>
+															<input type="radio" name="seconded" id="optionsRadios2" value="1">
+															Seconded Staff
+															</label>
+														</div>
+														<?php
+														}else {
+														?>
+														<div class="radio col-sm-4">
+															<label>
+															<input type="radio" name="seconded" id="optionsRadios1" value="0">
+															Actual Staff
+															</label>
+														</div>
+														<div class="radio col-sm-4">
+															<label>
+															<input type="radio" name="seconded" id="optionsRadios2" value="1" Checked>
+															Seconded Staff
+															</label>
+														</div>
+														<?php
+														}
+														?>
+													</div>
+												</div>
+												<div class="form-group">
 													<label for="highest qualification" class="col-sm-3 control-label">Highest Qualification</label>
 													<div class="col-sm-9">
 														<textarea class="form-control" rows="3" name="highest_qualification" placeholder="Enter Highest Qualification"><?php echo $row['Highest_Qualification']?></textarea>
@@ -287,6 +323,32 @@
 												</div>
 											<!-- /.box-footer -->
 											</form>										
+									</div>
+								</div>
+								<!-- /.tab-pane -->
+								<div class="tab-pane" id="profile">
+									<div class="box box-info">
+										<div class="box-header with-border">
+											<h3 class="box-title">Profile</h3>
+										</div>
+										<form action="../../backend/upload.php" method="post" enctype="multipart/form-data">
+											
+											<div class="box-body">
+												<div class="form-group">
+													<input type="hidden" name="staff_id" value="<?php echo $row['Staff_ID']?>">
+													<img class="profile-user-img img-responsive img-circle" style="width:150px;height:150px" src="../../uploads/<?php echo $row['profile']?>" alt="User profile picture">
+													<div>
+														<label for="upload">Select image to upload:</label>
+														<input type="file" style="margin:auto;" name="fileToUpload" id="fileToUpload">
+													</div>	
+												</div>
+											</div>
+										<!-- /.box-body -->
+											<div class="box-footer">
+												<button type="submit" name="submit" value="Upload Image"class="btn btn-info pull-right">Upload</button>
+											</div>
+										<!-- /.box-footer -->
+										</form>										
 									</div>
 								</div>
 								<?php

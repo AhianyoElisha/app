@@ -1,5 +1,11 @@
 <?php
 require_once("./backend/loginUser.php");
+session_start();
+if (isset($_SESSION['admin'])) {
+    header('location:./info/admin/index.php');
+}elseif (isset($_SESSION['staff'])) {
+    header('location:./info/staff/index.php');
+}
 ?>
 
 <!DOCTYPE html>
@@ -11,7 +17,7 @@ require_once("./backend/loginUser.php");
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   
-  <link rel="icon" type="image/png" href="../LeaveForm/images/icons/favicon.png"/>
+  <link rel="icon" type="image/png" href="./dist/images/icons/favicon.png"/>
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="../app/bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
@@ -35,7 +41,7 @@ require_once("./backend/loginUser.php");
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href=""><img src="../LeaveForm/images/pngfind.com-education-images-png-2219758.png" width="100%" height="auto" alt=""></a>
+    <a href=""><img src="./dist/images/pngfind.com-education-images-png-2219758.png" width="100%" height="auto" alt=""></a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body" id="div1">
@@ -55,14 +61,14 @@ require_once("./backend/loginUser.php");
         <input type="number" class="form-control" name="staffid" placeholder="Staff ID" required>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" name="password" placeholder="Password" required>
-        <span onclick="" class="glyphicon glyphicon-eye-close form-control-feedback"></span>
+        <input type="password" class="form-control" id="password" name="password"  placeholder="Password" required>
+        <i id="togglePassword" class="fa fa-eye fa-eye-slash" style="position:absolute;right:10px;top:10px"></i>
       </div>
       <div class="row">
         <div class="col-xs-8">
           <div class="checkbox icheck">
             <label>
-              <input type="checkbox"> Remember Me
+              <input type="checkbox"> 
             </label>
           </div>
         </div>
@@ -86,13 +92,19 @@ require_once("./backend/loginUser.php");
 <!-- iCheck -->
 <script src="../app/plugins/iCheck/icheck.min.js"></script>
 <script>
+const togglePassword = document.querySelector('#togglePassword');
+const password = document.querySelector('#password');
+togglePassword.addEventListener('click',function (e) {
+    const type = password.getAttribute('type') === 'password'? 'text': 'password';
+    password.setAttribute('type',type);
+    this.classList.toggle('fa-eye-slash');
+    
+})
   $(function () {
     $('input').iCheck({
   
     });
   });
-</script>
-<script>
 </script>
 </body>
 </html>
